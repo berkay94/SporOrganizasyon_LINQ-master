@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SporO" Class="SporODataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=10.10.22.199;Initial Catalog=SporO;User ID=test2" SettingsObjectName="LINQ.Properties.Settings" SettingsPropertyName="SporOConnectionString1" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Etkinlik" Member="Etkinliks">
+    <Type Name="Etkinlik">
+      <Column Name="EtkinlikId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="EtkinlikAdi" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="TipId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MekanID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EtkinlikTarihi" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Kontenjan" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="isActive" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Sid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Etkinlik_Katilanlar" Member="Katilanlars" ThisKey="EtkinlikId" OtherKey="Eid" Type="Katilanlar" />
+      <Association Name="EtkinlikTipi_Etkinlik" Member="EtkinlikTipi" ThisKey="TipId" OtherKey="TipId" Type="EtkinlikTipi" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EtkinlikTipi" Member="EtkinlikTipis">
+    <Type Name="EtkinlikTipi">
+      <Column Name="TipId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Tip" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Aciklama" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="EtkinlikTipi_Etkinlik" Member="Etkinliks" ThisKey="TipId" OtherKey="TipId" Type="Etkinlik" />
+    </Type>
+  </Table>
+  <Table Name="dbo.HataLoglari" Member="HataLoglaris">
+    <Type Name="HataLoglari">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DosyaAdi" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="MethodAdi" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="LineNumber" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ColumnNumber" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Message" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="trh" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Ilceler" Member="Ilcelers">
+    <Type Name="Ilceler">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ad" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Sehir" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Association Name="Ilceler_Mekan" Member="Mekans" ThisKey="Id" OtherKey="IlceId" Type="Mekan" />
+      <Association Name="Iller_Ilceler" Member="Iller" ThisKey="Sehir" OtherKey="Id" Type="Iller" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Iller" Member="Illers">
+    <Type Name="Iller">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Sehir" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Association Name="Iller_Ilceler" Member="Ilcelers" ThisKey="Id" OtherKey="Sehir" Type="Ilceler" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Katilanlar" Member="Katilanlars">
+    <Type Name="Katilanlar">
+      <Column Name="Eid" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Kid" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Etkinlik_Katilanlar" Member="Etkinlik" ThisKey="Eid" OtherKey="EtkinlikId" Type="Etkinlik" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Kullanici_Katilanlar" Member="Kullanici" ThisKey="Kid" OtherKey="Kid" Type="Kullanici" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Kullanici" Member="Kullanicis">
+    <Type Name="Kullanici">
+      <Column Name="Kid" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Ad" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Soyad" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Telefon" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Sifre" Type="System.String" DbType="Char(10)" CanBeNull="true" />
+      <Column Name="Ilce" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DogumTarihi" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Cinsiyet" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="isLogin" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Kullanici_Katilanlar" Member="Katilanlars" ThisKey="Kid" OtherKey="Kid" Type="Katilanlar" />
+      <Association Name="Kullanici_KullaniciSpor" Member="KullaniciSpors" ThisKey="Kid" OtherKey="Kid" Type="KullaniciSpor" />
+    </Type>
+  </Table>
+  <Table Name="dbo.KullaniciSpor" Member="KullaniciSpors">
+    <Type Name="KullaniciSpor">
+      <Column Name="Kid" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Sid" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Kullanici_KullaniciSpor" Member="Kullanici" ThisKey="Kid" OtherKey="Kid" Type="Kullanici" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Sporlar_KullaniciSpor" Member="Sporlar" ThisKey="Sid" OtherKey="SporId" Type="Sporlar" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Mekan" Member="Mekans">
+    <Type Name="Mekan">
+      <Column Name="Mid" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MekanAdi" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="IlceId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Ilceler_Mekan" Member="Ilceler" ThisKey="IlceId" OtherKey="Id" Type="Ilceler" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Sporlar" Member="Sporlars">
+    <Type Name="Sporlar">
+      <Column Name="SporId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SporAdi" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="SporcuSayisi" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Sporlar_KullaniciSpor" Member="KullaniciSpors" ThisKey="SporId" OtherKey="Sid" Type="KullaniciSpor" />
+    </Type>
+  </Table>
+  <Function Name="dbo.EtkinlikAl" Method="EtkinlikAl">
+    <ElementType Name="EtkinlikAlResult">
+      <Column Name="EtkinlikId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EtkinlikAdi" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="SporAdi" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Tip" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="EtkinlikTarihi" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="MekanAdi" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ad" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Sehir" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Kontenjan" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Katilanlar" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.EtkinlikTarihKontrol" Method="EtkinlikTarihKontrol">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.IsLoginUser" Method="IsLoginUser">
+    <Parameter Name="kid" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.KullaniciSporEkle" Method="KullaniciSporEkle">
+    <Parameter Name="kid" Type="System.Int32" DbType="Int" />
+    <Parameter Name="sid" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SonKullanici" Method="SonKullanici">
+    <Return Type="System.Int32" />
+  </Function>
+</Database>
